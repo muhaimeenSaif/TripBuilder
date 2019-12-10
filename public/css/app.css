@@ -1,0 +1,38 @@
+
+
+
+.control-label {
+  display: block;
+}
+
+.autocomplete1-wrapper, .autocomplete2-wrapper {
+  position: relative;
+}
+.autocomplete1-results, .autocomplete2-results {
+  position: absolute;
+  background: white;
+  z-index: 1;
+  top: 100%;
+  left: 0;
+  font-size: 13px;
+  border: solid 1px #ddd;
+  border-top-width: 0;
+  border-bottom-color: #ccc;
+  box-shadow: 
+    0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.autocomplete1-result, .autocomplete2-result {
+  padding: 12px 15px;
+  border-bottom: solid 1px #eee;
+  cursor: pointer;
+}
+
+.autocomplete1-result:last-child, .autocomplete2-result:last-child {
+  border-bottom-width: 0;
+}
+
+.autocomplete1-location, .autocomplete2-location {
+  opacity: .8;
+  font-size: smaller;
+}
