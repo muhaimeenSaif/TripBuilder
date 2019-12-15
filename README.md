@@ -7,17 +7,15 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-## About Laravel
+## Description of the project:-
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects.
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+A simple trip builder with the options for booking round trip, one-way booking and multi-city. The airport input fields are having autocomplete options with the correct airport names and codes. The date selection for round trip is handle so that after selecting the departure date the return date's option are only available from the departure date.
 
 ## Technologies Used:-
 
 The project is build using Laravel. The framework of the MVC is well maintained. 
-SQlite is used as database, ajax and javaScript for the airport autocomplete.
-Eloquent is used for creating tables, defining database relation and querrieng values from DB.
+SqLite is used as database, ajax and javaScript for single page loading.
+Eloquent is used for creating schema, defining schema realtions and querrieng values from DB.
 Bootstrap, HTML, CSS and the blade templeting is used for front-end
 The entire website is responsive so that it can be seamlessly used on mobile device with out breaking any visual representation 
 
