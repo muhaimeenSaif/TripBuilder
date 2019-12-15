@@ -23,11 +23,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         
         <!-- DateTime Picker -->
-        
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
-        
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
-        
+    
         <!-- Styles -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -41,8 +39,8 @@
 
 
     </body>
-    <script src="{{asset('js/airportAutoComplete1.js')}}"></script>
-    <script src="{{asset('js/airportAutoComplete2.js')}}"></script>
+    <script src="{{asset('js/multiCity.js')}}"></script>
+    <script src="{{asset('js/airportAutoComplete.js')}}"></script>
   
 
 </html>

@@ -34,10 +34,31 @@ class TripsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+
+    public function search(Request $request)
     {   
-        if($request->return_date == null) {
-           
+        //---------------------------------MUTI CITY-----------------------
+        if(count($request->departure_date)>1) {
+            $results = array();
+            $noOfCity = count($request->departure_date);
+            for( $i = 1 ;$i <= $noOfCity; $i++){
+                $search = ['departure_airport'=>$request->departure_airport[$i],
+                    'arrival_airport'=> $request->arrival_airport[$i]             
+                ];
+                $flights = Flight::where($search)->get();
+                if(count($flights)>0){
+                    $f1Result = array();
+                    $f1Result = $this->searchFlights($flights, $request);
+                    array_push($results,$f1Result);
+                }
+            }
+            if(count($results) == 0){
+                return view('pages.home')->with('result',[-10]);
+            }
+            return view('pages.home')->with('result',$results);
+        }
+        // -------------------------------ONE WAY------------------------------------
+        if($request->return_date[1] == null) {
             $search = ['departure_airport'=>$request->departure_airport,
                     'arrival_airport'=> $request->arrival_airport             
                 ];
@@ -49,8 +70,8 @@ class TripsController extends Controller
                 
                 return view('pages.home')->with('result',[-10]);
             }
-            
         }
+        // --------------------------------RoundTrip-----------------------------
         if ($request->has(['return_date','departure_date'])) {
             $search1 = ['departure_airport'=>$request->departure_airport,
             'arrival_airport'=> $request->arrival_airport
@@ -100,8 +121,8 @@ class TripsController extends Controller
             foreach($flight->airport_arrive as $arrive) {
                 $result['arrival_city'] = $arrive->city;
                 $result['arrival_airport_name'] = $arrive->name;
-                $result['arrival_timeZone'] = $departure->timezone;
-                $result['arrival_date'] = $departure->return_date;
+                $result['arrival_timeZone'] = $arrive->timezone;
+                $result['arrival_date'] = $request->return_date;
             }
 
             array_push($results,$result);            

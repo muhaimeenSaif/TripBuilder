@@ -12,4 +12,4 @@
 */
 
 Route::get('/', 'TripsController@index');
-Route::post('/search-flights', 'TripsController@store');
+Route::post('/search-flights', 'TripsController@search');

@@ -5,7 +5,7 @@
         <h1>Welcome to your personal trip builder</h1>
         <section>
             <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <div class="nav nav-tabs" style="margin-left: 17%;" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link active" onclick="roundTrip()"id="nav-round-trip" data-toggle="tab" href="#round-trip" role="tab" aria-controls="nav-home" aria-selected="true">Round Trip</a>
                     <a class="nav-item nav-link" onclick="oneWay()" id="nav-one-way" data-toggle="tab" href="#nav-one-way" role="tab" aria-controls="nav-profile" aria-selected="false">One Way</a>
                     <a class="nav-item nav-link" onclick="multiCity()" id="nav-multi-city" data-toggle="tab" href="#multi-city"  aria-controls="nav-contact" aria-selected="false">Multi-City</a>
@@ -15,77 +15,77 @@
             <div class="tab-content" id="nav-tabContent">
                 {{-- Round Trip --}}
                 <div class="tab-pane fade show active" id="nav-round-trip" role="tabpanel" aria-labelledby="nav-home-tab">
-                        {!!Form::open(['action'=> 'TripsController@store','method'=> 'POST'])!!}
-                        <div class="row">
-                            <div class="input-group col-md-6">
+                    {!!Form::open(['action'=> 'TripsController@search','method'=> 'POST'])!!}
+                <div id="dynamicAppend">
+                    <div class="row">
+                            <div class="input-group col-md-2">
+                            </div>
+                            <div class="input-group col-md-4">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">From</span>
                                 </div>
-                                <input autocomplete="off" class="form-control" style="width: 445px" id="autocomplete1" name="departure_airport" type="text" placeholder="City name" />
+                                <input autocomplete="off" class="form-control autocomplete"  id="autocomplete" name="departure_airport[1]" type="text" placeholder="City name" required=""/>
                             </div>
                               
-                            <div class="input-group col-md-6">
+                            <div class="input-group col-md-4">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">To</span>
                                 </div>
-                                <input autocomplete="off" class="form-control" style="width: 466px"id="autocomplete2" name="arrival_airport" type="text" placeholder="City name" />
+                                <input autocomplete="off" class="form-control autocomplete" id="autocomplete2" name="arrival_airport[1]" type="text" placeholder="City name" required=""/>
                             </div>
                         </div>
                       
                         <br>
                         <div class="row">
-                                <div class="input-group col-md-6">
+                                <div class="input-group col-md-2">
+                                </div>
+                                <div class="input-group col-md-4">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text ">Departure</span>
                                     </div>
-                                    <input type="text" autocomplete="off" class="form-control"  name="departure_date" id="departure_date" placeholder="Departure date" required="">
-                                    <div class="invalid-feedback" style="width: 100%;">
-                                        Departure date is required
-                                    </div>
+                                    <input type="text" autocomplete="off" class="form-control datePickerr"  name="departure_date[1]" id="departure_date" placeholder="Departure date" required="">
                                 </div>
                                     <br>
-                                <div class="input-group col-md-6" id="status">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text ">Return</span>
-                                        </div>
-                                        <input type="text" autocomplete="off" class="form-control" name="return_date" id="return_date" placeholder="Return date" >
-                                        <div class="invalid-feedback" style="width: 100%;">
-                                            Return date is required
-                                        </div>
+                                <div class="input-group col-md-4" id="status">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text ">Return</span>
                                     </div>
+                                    <input type="text" autocomplete="off" class="form-control datePickerr" name="return_date[1]" id="return_date" placeholder="Return date" >
+                                </div>
                         </div>
                         <br>
-                        <div class=" ">
+                        <div>
                             <select class="bootstrap-select btn btn-secondary dropdown-toggle" name="passengers">
                                     <option value="1" selected="selected">Passenger 1</option>
                             </select>
                         </div>
-                        <br>
+                    </div>
+                    <br>    <br>  
+                        <div class="input_fields_wrap" id="input_fields_wrap" style="display:none">
+                            <button class="btn btn-success add_field_button" style="float: right">Add More Fields</button>
+                        </div>
                         <div>
-                            <button type="submit" class="btn btn-success" id="roundTrip">Search Flights</button>
-            
+                            <button type="submit" class="btn btn-success" style="float: left; margin-left: 17%" id="roundTrip">Search Flights</button>
                         </div>
                         
                         {!!Form::close()!!}
                 </div>
-                {{-- Multi city --}}
-                {{-- <div class="tab-pane fade" id="multi-city" role="tabpanel" aria-labelledby="nav-multi-city">
-                    <h3>We are coming soon</h3>
-                </div> --}}
+        
             </div>
         </section>
     </div>
-   {{-- {{dd($result)}} --}}
+
+
+   {{---------------------------------- Results -------------------------------------------}}
     @if(count($result)>0 && $result[0]!=-10  && $result[0]!=-20)
-    {{-- {{dd($result[0])}} --}}
+    
     <div class="jumbotron text-center">
             <section>
-    
-       
+            {{------------------------------- Round Trip search result output -------------------------}}
             @if (count($result)==2)
-            {{-- Round Trip search result output --}}
                 @foreach ($result[0] as $f1)
                     @foreach ($result[1] as $f2)
+                    
                     <div class="row">
                        <div class="col-md-10">
                         <div class="row">
@@ -105,8 +105,9 @@
 
                                     $avrTimeZone = $f1['arrival_timeZone'];
                                     $avrTime = $f1['arrival_time'];
-                                    $dprDateTime = new DateTime("$dprDate $dprTime", new DateTimeZone($dprTimeZone));
-                                    $avrDateTime = new DateTime("$dprDate $avrTime", new DateTimeZone($avrTimeZone));
+                                   
+                                    $dprDateTime = new DateTime("$dprDate[1] $dprTime", new DateTimeZone($dprTimeZone));
+                                    $avrDateTime = new DateTime("$dprDate[1] $avrTime", new DateTimeZone($avrTimeZone));
                                     
                                     $timeDiff = $dprDateTime->diff($avrDateTime);
                                     $timeDiff2 = $timeDiff->format("%Hh %Im");
@@ -139,15 +140,13 @@
     
                                         $avrTimeZone = $f2['arrival_timeZone'];
                                         $avrTime = $f2['arrival_time'];
-                                        //$myDateTime = new DateTime('m/d/Y H:i', strtotime("$dprTime $arvTime") );
-                                        $dprDateTime = new DateTime("$dprDate $dprTime", new DateTimeZone($dprTimeZone));
-                                        $avrDateTime = new DateTime("$dprDate $avrTime", new DateTimeZone($avrTimeZone));
+                                       
+                                        $dprDateTime = new DateTime("$dprDate[1] $dprTime", new DateTimeZone($dprTimeZone));
+                                        $avrDateTime = new DateTime("$dprDate[1] $avrTime", new DateTimeZone($avrTimeZone));
                                         
                                         $timeDiff = $dprDateTime->diff($avrDateTime);
                                         $timeDiff2 = $timeDiff->format("%Hh %Im");
-                                        // echo $test2;
-                                        // $gmtTimezone = new DateTimeZone($f1['arrival_timeZone']);
-                                        // $myDateTime = new DateTime('2016-03-21 13:14', $gmtTimezone);
+                                        
                                     @endphp
                                             <p>{{$timeDiff2}}</p>
                                             <hr/>
@@ -167,18 +166,67 @@
                                     $price = $f1['price'] + $f2['price']  
                                 @endphp
                                 <h4> C${{$price}} </h4>
-                                <button type="button" class="btn btn-success">Book</button>
+                                <button type="button"  onclick="bookBtn()" id="bookBtn" class="btn btn-success">Book</button>
                         </div>
                     
                     </div> 
-                        
+                    <hr/>
                     @endforeach
                 
                 @endforeach
-            
-            {{-- Onway search results output --}}
-            @else
+            {{---------------------------------- Multi City ---------------------------------}}
+            @elseif(count($result)>2) 
+                @for ($i = 0; $i < count($result) ; $i++)
+                    @foreach ($result[$i] as $item)
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h5>{{$item['airline_name']}}</h5>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5>{{$item['departure_time']}}</h5>    
+                                    <h6>{{$item['departure_city']}}</h6>
+                                    <p>{{$item['departure_airport_name']}}</p>
+                                </div>
+                                <div class="col-md-2">
+                                    @php
+                                        $dprTimeZone = $item['departure_timeZone'];
+                                        $dprDate = $item['departure_date'];
+                                        $dprTime = $item['departure_time'];
 
+                                        $avrTimeZone = $item['arrival_timeZone'];
+                                        $avrTime = $item['arrival_time'];
+                                        
+                                        $dprDateTime = new DateTime("$dprDate[1] $dprTime", new DateTimeZone($dprTimeZone));
+                                        $avrDateTime = new DateTime("$dprDate[1] $avrTime", new DateTimeZone($avrTimeZone));
+                                        
+                                        $timeDiff = $dprDateTime->diff($avrDateTime);
+                                        $timeDiff2 = $timeDiff->format("%Hh %Im");
+                                        
+                                    @endphp
+                                            <p>{{$timeDiff2}}</p>
+                                            <hr/>
+                                            <p>Non-stop</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5>{{$item['arrival_time']}}</h5>
+                                    <h6>{{$item['arrival_city']}}</h6>
+                                    <p>{{$item['arrival_airport_name']}}</p>
+                                </div>
+                            </div>
+                        </div>
+                           <div class="col-md-2">
+                                <h4>C${{$item['price']}} </h4>
+                                <button type="button"  onclick="bookBtn()" id="bookBtn" class="btn btn-success">Book</button>
+                           </div>
+                    </div>  
+                @endforeach   
+                @endfor
+              
+            
+            {{------------------------- Onway search results output ------------------------}}
+            @else
                 @foreach ($result as $item)
                     <div class="row">
                         <div class="col-md-10">
@@ -200,8 +248,8 @@
                                         $avrTimeZone = $item['arrival_timeZone'];
                                         $avrTime = $item['arrival_time'];
                                         
-                                        $dprDateTime = new DateTime("$dprDate $dprTime", new DateTimeZone($dprTimeZone));
-                                        $avrDateTime = new DateTime("$dprDate $avrTime", new DateTimeZone($avrTimeZone));
+                                        $dprDateTime = new DateTime("$dprDate[1] $dprTime", new DateTimeZone($dprTimeZone));
+                                        $avrDateTime = new DateTime("$dprDate[1] $avrTime", new DateTimeZone($avrTimeZone));
                                         
                                         $timeDiff = $dprDateTime->diff($avrDateTime);
                                         $timeDiff2 = $timeDiff->format("%Hh %Im");
@@ -220,7 +268,7 @@
                         </div>
                            <div class="col-md-2">
                                 <h4>C${{$item['price']}} </h4>
-                                <button type="button" class="btn btn-success">Book</button>
+                                <button type="button" onclick="bookBtn()" id="bookBtn" class="btn btn-success">Book</button>
                            </div>
                     </div>  
                 @endforeach
@@ -235,37 +283,59 @@
     </section> 
     </div>
     @endif
-    
-    <script type="text/javascript">
-     function oneWay() {
+    {{--------------------------------- scripts --------------------------------------------}}
+    <script type="text/javascript"> 
+    function oneWay() {
         $("#status").hide();
+
+        var hidemask = document.querySelectorAll(".removeAfterDone");
+        for (var i = 0; i < hidemask.length; i++) {
+            hidemask[i].remove();
+        }
+
+        document.getElementById("input_fields_wrap").style.display = "none";
     }
     function roundTrip() {
         $("#status").show();
-        alert(depart_date);
+
+       var hidemask = document.querySelectorAll(".removeAfterDone");
+        for (var i = 0; i < hidemask.length; i++) {
+            hidemask[i].remove();
+        }
+
+        document.getElementById("input_fields_wrap").style.display = "none";
     }
     function multiCity() {
-       alert("We are working on this.")
+        $("#status").hide();
+        $("#add_field_button").show();
+        document.getElementById("input_fields_wrap").style.display = "block";
     }
-    
+    function bookBtn(){
+        alert("Your flight has been booked");
+        $('#bookBtn').remove();
+    }
+    // DateTime 
     $(document).ready(function(){
   
-    $("#departure_date").datepicker({
-    startDate : new Date(),
-    autoclose: true,
-    todayHighlight: true,
-    }).on('changeDate', function (selected) {
-    var minDate = new Date(selected.date.valueOf());
-    $('#return_date').datepicker('setStartDate', minDate);
-    });
-
-    $("#return_date").datepicker()
-    .on('changeDate', function (selected) {
+        $("#departure_date").datepicker({
+        startDate : new Date(),
+        autoclose: true,
+        todayHighlight: true,
+        }).on('changeDate', function (selected) {
         var minDate = new Date(selected.date.valueOf());
-        $('#departure_date').datepicker('setEndDate', minDate);
-    });
+        $('#return_date').datepicker('setStartDate', minDate);
+        });
 
-});
+        $("#return_date").datepicker(
+            {
+                autoclose: true,
+            })
+        .on('changeDate', function (selected) {
+            var minDate = new Date(selected.date.valueOf());
+            $('#return_date').datepicker('setEndDate', minDate);
+        });
+
+    });
     
     </script>
 @endsection
